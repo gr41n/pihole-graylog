@@ -1,5 +1,5 @@
 # Updates
-After installing the content pack, none of my data was being parsed from pihole. It seems like there may have been changes to the way that pihole was logging, and nothing was being parsed. After making changes to the 2 primary GROK expressions (DNSMASQ and PIHOLE_LIST) it was working again. I also made tweaks to the dashboard searches to change what was being searched on. 
+After installing the content pack, none of my data was being parsed from pihole. It seems like there may have been changes to the way that pihole was logging, and nothing was being parsed. I made changes to 1/2 of the primary GROK patterns (DNSMASQ) and scrapped the other one (PIHOLE). When I was making tweaks they were conflicting with one another, and I found it easier to just merge them. I also made tweaks to the dashboard searches to change what was being searched on. 
 
 ### Original Text:
 # Graylog3 supported
