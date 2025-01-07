@@ -875,7 +875,7 @@
                 },
                 "query": {
                   "type": "elasticsearch",
-                  "query_string": "query_action:gravity"
+                  "query_string": "gravity_action:blocked"
                 },
                 "timerange": {
                   "from": 86400,
