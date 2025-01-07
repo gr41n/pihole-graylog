@@ -1,3 +1,7 @@
+# Updates
+After installing the content pack, none of my data was being parsed from pihole. It seems like there may have been changes to the way that pihole was logging, and nothing was being parsed. After making changes to the 2 primary GROK expressions (DNSMASQ and PIHOLE_LIST) it was working again. I also made tweaks to the dashboard searches to change what was being searched on. 
+
+### Original Text:
 # Graylog3 supported
 ``Content Pack for piHole with Graylog``  
   
