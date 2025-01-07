@@ -1,7 +1,7 @@
 {
   "v": "1",
   "id": "e7e0dcb4-b629-40b9-802e-7cb223b48343",
-  "rev": 4,
+  "rev": 5,
   "name": "pihole",
   "summary": "Provides all the content needed to utilize pihole with graylog",
   "description": "Forked from https://github.com/chateaulav/pihole. Original Description: \"built and based off of https://jalogisch.de/2017/der-eigene-dns-resolver-zuhause/, your own dns resolver (at home) by Jan Doberstein. Includes setting GeoIP, so ensure you download the current City db from Maxmind, and install the current Threat intelligence content packs. A seperate input is established to collect only pihole syslog traffic.\"\n\nForked to make tweaks to grok patterns that were broken for whatever reason (best guess is that pihole syslog format changed). Also fixed some broken dashboards. ",
@@ -15,7 +15,7 @@
         "name": "dashboard",
         "version": "2"
       },
-      "id": "ffa634e1-d842-4975-b62a-440505504f1e",
+      "id": "6307b8f1-3f28-472c-b23a-80c87159e467",
       "data": {
         "summary": {
           "@type": "string",
@@ -38,12 +38,14 @@
                 {
                   "query": {
                     "type": "elasticsearch",
-                    "query_string": "query_action:gravity"
+                    "query_string": "gravity_answer:blocked"
                   },
-                  "name": "chart",
+                  "name": "trend",
                   "timerange": {
-                    "from": 86400,
-                    "type": "relative"
+                    "source": "search_type",
+                    "id": "36c56853-8b51-42df-8494-a8442c14ae1f",
+                    "offset": "1i",
+                    "type": "offset"
                   },
                   "column_limit": null,
                   "streams": [],
@@ -51,25 +53,16 @@
                   "series": [
                     {
                       "type": "count",
-                      "id": "count()",
+                      "id": "Message Count",
                       "field": null
                     }
                   ],
                   "filter": null,
                   "rollup": true,
-                  "row_groups": [
-                    {
-                      "type": "values",
-                      "fields": [
-                        "query_domain"
-                      ],
-                      "limit": 15,
-                      "skip_empty_values": false
-                    }
-                  ],
+                  "row_groups": [],
                   "type": "pivot",
                   "stream_categories": [],
-                  "id": "963fd799-2768-4e1a-b94e-cd9750316700",
+                  "id": "f5154abe-d09b-4946-b59d-1c408a42b5b3",
                   "filters": [],
                   "column_groups": [],
                   "sort": []
@@ -108,177 +101,7 @@
                   ],
                   "type": "pivot",
                   "stream_categories": [],
-                  "id": "874f3daa-2733-451b-99fb-253a76c19d86",
-                  "filters": [],
-                  "column_groups": [],
-                  "sort": []
-                },
-                {
-                  "query": {
-                    "type": "elasticsearch",
-                    "query_string": "source:pihole AND threat_indicated:true"
-                  },
-                  "name": "chart",
-                  "timerange": {
-                    "range": 86400,
-                    "type": "relative"
-                  },
-                  "column_limit": null,
-                  "streams": [],
-                  "row_limit": null,
-                  "series": [
-                    {
-                      "type": "count",
-                      "id": "Message Count",
-                      "field": null
-                    }
-                  ],
-                  "filter": null,
-                  "rollup": true,
-                  "row_groups": [],
-                  "type": "pivot",
-                  "stream_categories": [],
-                  "id": "104c5761-35e2-44aa-b198-cbf1275861ad",
-                  "filters": [],
-                  "column_groups": [],
-                  "sort": []
-                },
-                {
-                  "query": {
-                    "type": "elasticsearch",
-                    "query_string": "gravity_answer:blocked"
-                  },
-                  "name": "chart",
-                  "timerange": {
-                    "from": 86400,
-                    "type": "relative"
-                  },
-                  "column_limit": null,
-                  "streams": [],
-                  "row_limit": null,
-                  "series": [
-                    {
-                      "type": "count",
-                      "id": "Message Count",
-                      "field": null
-                    }
-                  ],
-                  "filter": null,
-                  "rollup": true,
-                  "row_groups": [],
-                  "type": "pivot",
-                  "stream_categories": [],
-                  "id": "2ee5f033-2886-47c9-a02c-2330a6625771",
-                  "filters": [],
-                  "column_groups": [],
-                  "sort": []
-                },
-                {
-                  "query": {
-                    "type": "elasticsearch",
-                    "query_string": "source:pihole AND threat_indicated:true"
-                  },
-                  "name": "trend",
-                  "timerange": {
-                    "source": "search_type",
-                    "id": "104c5761-35e2-44aa-b198-cbf1275861ad",
-                    "offset": "1i",
-                    "type": "offset"
-                  },
-                  "column_limit": null,
-                  "streams": [],
-                  "row_limit": null,
-                  "series": [
-                    {
-                      "type": "count",
-                      "id": "Message Count",
-                      "field": null
-                    }
-                  ],
-                  "filter": null,
-                  "rollup": true,
-                  "row_groups": [],
-                  "type": "pivot",
-                  "stream_categories": [],
-                  "id": "bc8d8e71-8465-432c-94a2-ec678e17746f",
-                  "filters": [],
-                  "column_groups": [],
-                  "sort": []
-                },
-                {
-                  "query": {
-                    "type": "elasticsearch",
-                    "query_string": "application_name:pihole AND threat_indicated:true AND _exists_:threat_names"
-                  },
-                  "name": "chart",
-                  "timerange": {
-                    "range": 86400,
-                    "type": "relative"
-                  },
-                  "column_limit": null,
-                  "streams": [],
-                  "row_limit": null,
-                  "series": [
-                    {
-                      "type": "count",
-                      "id": "count()",
-                      "field": null
-                    }
-                  ],
-                  "filter": null,
-                  "rollup": true,
-                  "row_groups": [
-                    {
-                      "type": "values",
-                      "fields": [
-                        "threat_names"
-                      ],
-                      "limit": 15,
-                      "skip_empty_values": false
-                    }
-                  ],
-                  "type": "pivot",
-                  "stream_categories": [],
-                  "id": "6fc46dc3-dd7f-4493-9e34-d361c14789fc",
-                  "filters": [],
-                  "column_groups": [],
-                  "sort": []
-                },
-                {
-                  "query": {
-                    "type": "elasticsearch",
-                    "query_string": "_exists_:query_source"
-                  },
-                  "name": "chart",
-                  "timerange": {
-                    "range": 86400,
-                    "type": "relative"
-                  },
-                  "column_limit": null,
-                  "streams": [],
-                  "row_limit": null,
-                  "series": [
-                    {
-                      "type": "count",
-                      "id": "count()",
-                      "field": null
-                    }
-                  ],
-                  "filter": null,
-                  "rollup": true,
-                  "row_groups": [
-                    {
-                      "type": "values",
-                      "fields": [
-                        "query_source"
-                      ],
-                      "limit": 15,
-                      "skip_empty_values": false
-                    }
-                  ],
-                  "type": "pivot",
-                  "stream_categories": [],
-                  "id": "a16f17fd-fbed-48d9-8f7c-368c951c734b",
+                  "id": "5629bea1-1843-4354-beb1-1ba0ec93eca7",
                   "filters": [],
                   "column_groups": [],
                   "sort": []
@@ -288,12 +111,10 @@
                     "type": "elasticsearch",
                     "query_string": "source:pihole AND query_action:query*"
                   },
-                  "name": "trend",
+                  "name": "chart",
                   "timerange": {
-                    "source": "search_type",
-                    "id": "9574a2bc-4f19-4f10-b91f-73d5c30d327f",
-                    "offset": "1i",
-                    "type": "offset"
+                    "from": 86400,
+                    "type": "relative"
                   },
                   "column_limit": null,
                   "streams": [],
@@ -310,7 +131,7 @@
                   "row_groups": [],
                   "type": "pivot",
                   "stream_categories": [],
-                  "id": "0d8401ec-9a9e-4711-8481-1fc5bc255c0d",
+                  "id": "1b44b8ae-1f15-468e-ad95-8523dc8b0f1c",
                   "filters": [],
                   "column_groups": [],
                   "sort": []
@@ -349,7 +170,177 @@
                   ],
                   "type": "pivot",
                   "stream_categories": [],
-                  "id": "cb4ddbf7-e4e5-4176-b9c0-7da70f189fa7",
+                  "id": "b8e75958-b80d-4ef5-a616-58f3c0540d7c",
+                  "filters": [],
+                  "column_groups": [],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "_exists_:query_source"
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "range": 86400,
+                    "type": "relative"
+                  },
+                  "column_limit": null,
+                  "streams": [],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "count()",
+                      "field": null
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [
+                    {
+                      "type": "values",
+                      "fields": [
+                        "query_source"
+                      ],
+                      "limit": 15,
+                      "skip_empty_values": false
+                    }
+                  ],
+                  "type": "pivot",
+                  "stream_categories": [],
+                  "id": "eebfcf18-161a-4e24-87a2-2000049e73ea",
+                  "filters": [],
+                  "column_groups": [],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "gravity_answer:\"blocked\""
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "from": 86400,
+                    "type": "relative"
+                  },
+                  "column_limit": null,
+                  "streams": [],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "count()",
+                      "field": null
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [
+                    {
+                      "type": "values",
+                      "fields": [
+                        "query_domain"
+                      ],
+                      "limit": 15,
+                      "skip_empty_values": false
+                    }
+                  ],
+                  "type": "pivot",
+                  "stream_categories": [],
+                  "id": "6cf36bd4-1b0d-423a-b6c4-6c9490d46b07",
+                  "filters": [],
+                  "column_groups": [],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "source:pihole AND threat_indicated:true"
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "range": 86400,
+                    "type": "relative"
+                  },
+                  "column_limit": null,
+                  "streams": [],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "Message Count",
+                      "field": null
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [],
+                  "type": "pivot",
+                  "stream_categories": [],
+                  "id": "25b6bd4a-61dd-42c0-a1a0-fa71c5554fac",
+                  "filters": [],
+                  "column_groups": [],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "source:pihole AND query_action:query*"
+                  },
+                  "name": "trend",
+                  "timerange": {
+                    "source": "search_type",
+                    "id": "1b44b8ae-1f15-468e-ad95-8523dc8b0f1c",
+                    "offset": "1i",
+                    "type": "offset"
+                  },
+                  "column_limit": null,
+                  "streams": [],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "Message Count",
+                      "field": "query_action"
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [],
+                  "type": "pivot",
+                  "stream_categories": [],
+                  "id": "f4612197-0538-4b7e-9de8-30a8b7a80911",
+                  "filters": [],
+                  "column_groups": [],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "gravity_answer:blocked"
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "from": 86400,
+                    "type": "relative"
+                  },
+                  "column_limit": null,
+                  "streams": [],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "Message Count",
+                      "field": null
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [],
+                  "type": "pivot",
+                  "stream_categories": [],
+                  "id": "36c56853-8b51-42df-8494-a8442c14ae1f",
                   "filters": [],
                   "column_groups": [],
                   "sort": []
@@ -380,7 +371,7 @@
                     {
                       "type": "values",
                       "fields": [
-                        "query_action"
+                        "query_domain"
                       ],
                       "limit": 15,
                       "skip_empty_values": false
@@ -388,7 +379,7 @@
                   ],
                   "type": "pivot",
                   "stream_categories": [],
-                  "id": "58facdf1-8a07-466e-a520-d0a699e29639",
+                  "id": "b4a685be-0eb4-461d-aaf7-bbe4cfee471c",
                   "filters": [],
                   "column_groups": [],
                   "sort": []
@@ -396,42 +387,12 @@
                 {
                   "query": {
                     "type": "elasticsearch",
-                    "query_string": "source:pihole AND query_action:query*"
-                  },
-                  "name": "chart",
-                  "timerange": {
-                    "from": 86400,
-                    "type": "relative"
-                  },
-                  "column_limit": null,
-                  "streams": [],
-                  "row_limit": null,
-                  "series": [
-                    {
-                      "type": "count",
-                      "id": "Message Count",
-                      "field": "query_action"
-                    }
-                  ],
-                  "filter": null,
-                  "rollup": true,
-                  "row_groups": [],
-                  "type": "pivot",
-                  "stream_categories": [],
-                  "id": "9574a2bc-4f19-4f10-b91f-73d5c30d327f",
-                  "filters": [],
-                  "column_groups": [],
-                  "sort": []
-                },
-                {
-                  "query": {
-                    "type": "elasticsearch",
-                    "query_string": "gravity_answer:blocked"
+                    "query_string": "source:pihole AND threat_indicated:true"
                   },
                   "name": "trend",
                   "timerange": {
                     "source": "search_type",
-                    "id": "2ee5f033-2886-47c9-a02c-2330a6625771",
+                    "id": "25b6bd4a-61dd-42c0-a1a0-fa71c5554fac",
                     "offset": "1i",
                     "type": "offset"
                   },
@@ -450,7 +411,46 @@
                   "row_groups": [],
                   "type": "pivot",
                   "stream_categories": [],
-                  "id": "e7728a68-b9a2-4d88-9f37-e6d526eb0dda",
+                  "id": "1f9ee2a0-ca20-4596-aa85-6027f93a1003",
+                  "filters": [],
+                  "column_groups": [],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "application_name:pihole AND threat_indicated:true AND _exists_:threat_names"
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "range": 86400,
+                    "type": "relative"
+                  },
+                  "column_limit": null,
+                  "streams": [],
+                  "row_limit": null,
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "count()",
+                      "field": null
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [
+                    {
+                      "type": "values",
+                      "fields": [
+                        "threat_names"
+                      ],
+                      "limit": 15,
+                      "skip_empty_values": false
+                    }
+                  ],
+                  "type": "pivot",
+                  "stream_categories": [],
+                  "id": "cfe97305-a5e1-4c03-a938-27d62dfd81b4",
                   "filters": [],
                   "column_groups": [],
                   "sort": []
@@ -461,7 +461,7 @@
           "parameters": [],
           "requires": {},
           "owner": "admin",
-          "created_at": "2025-01-07T13:59:43.678Z"
+          "created_at": "2025-01-07T14:24:32.438Z"
         },
         "created_at": "2020-05-24T17:47:28.269Z",
         "requires": {},
@@ -623,6 +623,55 @@
                   "row_pivots": [
                     {
                       "fields": [
+                        "query_domain"
+                      ],
+                      "type": "values",
+                      "config": {
+                        "limit": 15
+                      }
+                    }
+                  ],
+                  "series": [
+                    {
+                      "config": {
+                        "name": null
+                      },
+                      "function": "count()"
+                    }
+                  ],
+                  "rollup": true,
+                  "column_pivots": [],
+                  "visualization_config": {
+                    "pinned_columns": []
+                  },
+                  "formatting_settings": null,
+                  "sort": []
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": "programname:dnsmasq AND NOT query_action:\"/etc/pihole/custom.list\""
+                },
+                "timerange": {
+                  "from": 86400,
+                  "type": "relative"
+                },
+                "streams": [],
+                "filter": null,
+                "type": "aggregation",
+                "stream_categories": [],
+                "id": "40fe2a5d-109b-4698-b0ab-74871d2e3363",
+                "filters": []
+              },
+              {
+                "config": {
+                  "visualization": "table",
+                  "units": {},
+                  "column_limit": null,
+                  "event_annotation": false,
+                  "row_limit": 15,
+                  "row_pivots": [
+                    {
+                      "fields": [
                         "query_answer_whois_organization"
                       ],
                       "type": "values",
@@ -658,6 +707,53 @@
                 "type": "aggregation",
                 "stream_categories": [],
                 "id": "c07f3ec8-8982-4b8f-a0b5-742e70371339",
+                "filters": []
+              },
+              {
+                "config": {
+                  "visualization": "table",
+                  "units": {},
+                  "column_limit": null,
+                  "event_annotation": false,
+                  "row_limit": 15,
+                  "row_pivots": [
+                    {
+                      "fields": [
+                        "query_domain"
+                      ],
+                      "type": "values",
+                      "config": {
+                        "limit": 15
+                      }
+                    }
+                  ],
+                  "series": [
+                    {
+                      "config": {
+                        "name": null
+                      },
+                      "function": "count()"
+                    }
+                  ],
+                  "rollup": true,
+                  "column_pivots": [],
+                  "visualization_config": null,
+                  "formatting_settings": null,
+                  "sort": []
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": "gravity_answer:\"blocked\""
+                },
+                "timerange": {
+                  "from": 86400,
+                  "type": "relative"
+                },
+                "streams": [],
+                "filter": null,
+                "type": "aggregation",
+                "stream_categories": [],
+                "id": "125ca269-d7cc-4ad8-b1b8-8b55e6fe5bc6",
                 "filters": []
               },
               {
@@ -793,132 +889,38 @@
                 "stream_categories": [],
                 "id": "dd60e605-aeb4-4e16-a4c8-a3079a2fe953",
                 "filters": []
-              },
-              {
-                "config": {
-                  "visualization": "table",
-                  "units": {},
-                  "column_limit": null,
-                  "event_annotation": false,
-                  "row_limit": 15,
-                  "row_pivots": [
-                    {
-                      "fields": [
-                        "query_action"
-                      ],
-                      "type": "values",
-                      "config": {
-                        "limit": 15
-                      }
-                    }
-                  ],
-                  "series": [
-                    {
-                      "config": {
-                        "name": null
-                      },
-                      "function": "count()"
-                    }
-                  ],
-                  "rollup": true,
-                  "column_pivots": [],
-                  "visualization_config": null,
-                  "formatting_settings": null,
-                  "sort": []
-                },
-                "query": {
-                  "type": "elasticsearch",
-                  "query_string": "programname:dnsmasq AND NOT query_action:\"/etc/pihole/custom.list\""
-                },
-                "timerange": {
-                  "from": 86400,
-                  "type": "relative"
-                },
-                "streams": [],
-                "filter": null,
-                "type": "aggregation",
-                "stream_categories": [],
-                "id": "40fe2a5d-109b-4698-b0ab-74871d2e3363",
-                "filters": []
-              },
-              {
-                "config": {
-                  "visualization": "table",
-                  "units": {},
-                  "column_limit": null,
-                  "event_annotation": false,
-                  "row_limit": 15,
-                  "row_pivots": [
-                    {
-                      "fields": [
-                        "query_domain"
-                      ],
-                      "type": "values",
-                      "config": {
-                        "limit": 15
-                      }
-                    }
-                  ],
-                  "series": [
-                    {
-                      "config": {
-                        "name": null
-                      },
-                      "function": "count()"
-                    }
-                  ],
-                  "rollup": true,
-                  "column_pivots": [],
-                  "visualization_config": null,
-                  "formatting_settings": null,
-                  "sort": []
-                },
-                "query": {
-                  "type": "elasticsearch",
-                  "query_string": "gravity_action:blocked"
-                },
-                "timerange": {
-                  "from": 86400,
-                  "type": "relative"
-                },
-                "streams": [],
-                "filter": null,
-                "type": "aggregation",
-                "stream_categories": [],
-                "id": "125ca269-d7cc-4ad8-b1b8-8b55e6fe5bc6",
-                "filters": []
               }
             ],
             "widget_mapping": {
               "9346af21-e18d-4014-a7e5-7b7944bd0b20": [
-                "874f3daa-2733-451b-99fb-253a76c19d86"
+                "5629bea1-1843-4354-beb1-1ba0ec93eca7"
               ],
               "40fe2a5d-109b-4698-b0ab-74871d2e3363": [
-                "58facdf1-8a07-466e-a520-d0a699e29639"
+                "b4a685be-0eb4-461d-aaf7-bbe4cfee471c"
               ],
               "9d4133c9-d7dd-43c6-ab35-c40c47152133": [
-                "6fc46dc3-dd7f-4493-9e34-d361c14789fc"
+                "cfe97305-a5e1-4c03-a938-27d62dfd81b4"
               ],
               "125ca269-d7cc-4ad8-b1b8-8b55e6fe5bc6": [
-                "963fd799-2768-4e1a-b94e-cd9750316700"
+                "6cf36bd4-1b0d-423a-b6c4-6c9490d46b07"
               ],
               "375151f2-1557-4c5c-8457-fe4125242308": [
-                "e7728a68-b9a2-4d88-9f37-e6d526eb0dda",
-                "2ee5f033-2886-47c9-a02c-2330a6625771"
+                "36c56853-8b51-42df-8494-a8442c14ae1f",
+                "f5154abe-d09b-4946-b59d-1c408a42b5b3"
               ],
               "6141e765-67f7-41a8-b696-04298bd125d2": [
-                "bc8d8e71-8465-432c-94a2-ec678e17746f",
-                "104c5761-35e2-44aa-b198-cbf1275861ad"
+                "1f9ee2a0-ca20-4596-aa85-6027f93a1003",
+                "25b6bd4a-61dd-42c0-a1a0-fa71c5554fac"
               ],
               "dd60e605-aeb4-4e16-a4c8-a3079a2fe953": [
-                "a16f17fd-fbed-48d9-8f7c-368c951c734b"
+                "eebfcf18-161a-4e24-87a2-2000049e73ea"
               ],
               "c2e25aae-5719-46fb-a62e-08c4b056cc4d": [
-                "9574a2bc-4f19-4f10-b91f-73d5c30d327f",
-                "0d8401ec-9a9e-4711-8481-1fc5bc255c0d"
+                "1b44b8ae-1f15-468e-ad95-8523dc8b0f1c",
+                "f4612197-0538-4b7e-9de8-30a8b7a80911"
               ],
               "c07f3ec8-8982-4b8f-a0b5-742e70371339": [
-                "cb4ddbf7-e4e5-4176-b9c0-7da70f189fa7"
+                "b8e75958-b80d-4ef5-a616-58f3c0540d7c"
               ]
             },
             "positions": {
@@ -1032,24 +1034,6 @@
       "data": {
         "name": "MINUTE",
         "pattern": "(?:[0-5][0-9])"
-      },
-      "constraints": [
-        {
-          "type": "server-version",
-          "version": ">=3.3.0+4ea5649"
-        }
-      ]
-    },
-    {
-      "v": "1",
-      "type": {
-        "name": "grok_pattern",
-        "version": "1"
-      },
-      "id": "53a39308-857a-4a77-bf84-9a5eab4f6604",
-      "data": {
-        "name": "MONTH",
-        "pattern": "\\b(?:Jan(?:uary|uar)?|Feb(?:ruary|ruar)?|M(?:a|ä)?r(?:ch|z)?|Apr(?:il)?|Ma(?:y|i)?|Jun(?:e|i)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|O(?:c|k)?t(?:ober)?|Nov(?:ember)?|De(?:c|z)(?:ember)?)\\b"
       },
       "constraints": [
         {
@@ -1208,7 +1192,7 @@
         "name": "grok_pattern",
         "version": "1"
       },
-      "id": "ea3ee63c-72ea-42bd-ae4a-d4678589039c",
+      "id": "da4868f6-4b97-42ea-95f4-7bb1f42532f9",
       "data": {
         "name": "DNSMASQ",
         "pattern": "%{WORD:programname}\\[%{POSINT:procid}\\]: ((?:%{WORD:query_action}\\[%{WORD:query_type}\\])|(?:gravity %{WORD:gravity_answer})) %{NOTSPACE:query_domain} (?:from %{NOTSPACE:query_source}|is %{NOTSPACE:query_answer}|to %{NOTSPACE:query_target})"
@@ -1226,10 +1210,10 @@
         "name": "grok_pattern",
         "version": "1"
       },
-      "id": "38bd2f3d-540c-42d6-aa18-0d838f82f0ef",
+      "id": "decc970f-4797-497b-a179-c16099818fac",
       "data": {
         "name": "PIHOLE",
-        "pattern": "%{WORD:application_name} %{WORD:programname}\\[%{POSINT: procid}.. %{NOTSPACE:query_list}.list %{NOTSPACE:query_domain} .* %{NOTSPACE:query_answer}"
+        "pattern": "%{WORD:application_name} %{WORD:programname}\\[%{POSINT: procid}.. %{NOTSPACE:query_list} %{NOTSPACE:query_domain} .* %{NOTSPACE:query_answer}"
       },
       "constraints": [
         {
@@ -1244,7 +1228,7 @@
         "name": "grok_pattern",
         "version": "1"
       },
-      "id": "d2c04378-bb76-4325-ac3e-31d8b108c5f3",
+      "id": "7b775139-9d6e-4497-9ccf-04b22a360a03",
       "data": {
         "name": "WORD",
         "pattern": "\\b\\w+\\b"
@@ -1262,7 +1246,7 @@
         "name": "grok_pattern",
         "version": "1"
       },
-      "id": "ce35d98f-487d-4c21-9c94-ce9d734592d2",
+      "id": "4af2dac5-8ad6-465f-93f2-b008d3f3b0b3",
       "data": {
         "name": "NOTSPACE",
         "pattern": "\\S+"
@@ -1280,7 +1264,7 @@
         "name": "grok_pattern",
         "version": "1"
       },
-      "id": "ece1522a-6aff-41fe-928b-c61c4b1e7415",
+      "id": "6f3ec9f4-7a90-42a6-9712-8bda7dabde1a",
       "data": {
         "name": "POSINT",
         "pattern": "\\b(?:[1-9][0-9]*)\\b"
